@@ -6,7 +6,7 @@ export default function createVueApp() {
             return{                            
                 products:[],
                 tempproduct:{
-                    imgsUrl : [],
+                    imagesUrl : [],
                 },
                 sum : 0,   
                 url:'https://ec-course-api.hexschool.io/v2/',
@@ -76,10 +76,13 @@ export default function createVueApp() {
                     apiUrl = `${this.url}api/${this.path}/admin/product`
                     method = 'post'               
                 } 
-                
-                axios[method](apiUrl,this.tempproduct)
+                // console.log(apiUrl)
+                // console.log(method)
+                axios[method](apiUrl, { data: this.tempproduct })
+                // console.log(apiUrl)
+                // console.log({ data: this.tempproduct })
                 .then((res) =>{
-                    // console.log(res)
+                    console.log(res)
                     if(this.myModel){
                         this.myModel.hide()
                     } 
