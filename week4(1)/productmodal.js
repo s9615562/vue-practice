@@ -92,12 +92,12 @@ export default{
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="origin_price" class="form-label">原價</label>
-                  <input id="origin_price" type="number" min="0" class="form-control" placeholder="請輸入原價" v-model="tempproduct.origin_price">
+                  <input id="origin_price" type="number" min="0" class="form-control" placeholder="請輸入原價" v-model.number="tempproduct.origin_price">
                 </div>
                 <div class="mb-3 col-md-6">
                   <label for="price" class="form-label">售價</label>
                   <input id="price" type="number" min="0" class="form-control"
-                         placeholder="請輸入售價" v-model="tempproduct.price">
+                         placeholder="請輸入售價" v-model.number="tempproduct.price">
                 </div>
               </div>
               <hr>
@@ -118,7 +118,7 @@ export default{
                 <div class="form-check">
                   <input id="is_enabled" class="form-check-input" type="checkbox"
                          :true-value="1" :false-value="0">
-                  <label class="form-check-label" for="is_enabled">是否啟用</label>
+                  <label class="form-check-label" for="is_enabled" v-modal="tempproduct.is_enabled">是否啟用</label>
                 </div>
               </div>
             </div>

@@ -3,8 +3,7 @@ import pagination from './pagination.js'
 import productmodal from './productmodal.js';
 import delproductmodal from './delproductmodal.js'
 
-export default function createVueApp() {
-    return createApp({
+createApp({
         data(){
             return{                            
                 products:[],
@@ -33,8 +32,8 @@ export default function createVueApp() {
                 })
                 .catch((err) => {
                 console.log(err)
-                alert(err.response.data.message)
-                window.location = 'signin3.html'
+                alert(err.data.message)
+                window.location = 'signin4.html'
                 })
             },
             getproducts(page=1){ //參數預設值
@@ -48,6 +47,7 @@ export default function createVueApp() {
                 })
                 .catch((err) => {
                 console.dir(err)
+                alert(err.data.message)
                 })
             },           
             openmodal(status,item){
@@ -79,20 +79,11 @@ export default function createVueApp() {
                 }else if(this.isNew == 'delete'){
                     apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempproduct.id}`
                     method = 'delete'               
-                }else if(this.isNew){
-                    // console.log(this.tempproduct)
-                    apiUrl = `${this.url}api/${this.path}/admin/product`
-                    method = 'post'               
-                } 
-                // console.log(apiUrl)
-                // console.log(method)
+                }
                 axios[method](apiUrl, { data: this.tempproduct })
-                // console.log(apiUrl)
-                // console.log({ data: this.tempproduct })
                 .then((res) =>{
                     // console.log(res)
                     if(this.isNew || !this.isNew){
-                        // this.myModel.hide()
                         this.$refs.pmodal.closemodal()
                     } 
                     if(this.isNew == 'delete'){
@@ -102,15 +93,14 @@ export default function createVueApp() {
                 })
                 .catch((err) => {
                 console.log(err)
+                alert(err.data.message)
                 })
                 },
                 
         },
                                
         mounted() {
-            this.check()
-            
-            
+            this.check()    
         },
         components:{
             pagination,
@@ -118,4 +108,4 @@ export default function createVueApp() {
             delproductmodal
         },
         
-    }).mount('#app');}
+    }).mount('#app');

@@ -51,7 +51,7 @@
                 {{ item.price }}
               </td>
               <td width="150">
-                <span v-if="item" class="text-success">啟用</span>
+                <span v-if="tempproduct.is_enabled" class="text-success">啟用</span>
                 <span v-else>未啟用</span>
               </td>
               <td>
@@ -101,10 +101,6 @@
             crossorigin="anonymous"></script>
 
     <script type="module" src="product4.js"></script>
-    <script type="module">
-      import createVueApp from './product4.js';
-      createVueApp()
-    </script>
   </body>
 
 </html>
