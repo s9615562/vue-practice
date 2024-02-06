@@ -3,13 +3,12 @@ import pagination from './pagination.js'
 import productmodal from './productmodal.js';
 import delproductmodal from './delproductmodal.js'
 
-export default function createVueApp() {
-    return createApp({
+    createApp({
         data(){
             return{                            
                 products:[],
                 pagination : {},
-                tempproduct:{
+                tempProduct:{
                     imagesUrl : [],
                 },  
                 url:'https://ec-course-api.hexschool.io/v2/',
@@ -33,7 +32,7 @@ export default function createVueApp() {
                 })
                 .catch((err) => {
                 console.log(err)
-                alert(err.response.data.message)
+                alert(err.data.message)
                 window.location = 'signin3.html'
                 })
             },
@@ -43,8 +42,6 @@ export default function createVueApp() {
                 console.log(res)
                 this.products = res.data.products
                 this.pagination = res.data.pagination
-                // console.log(this.products)
-                // console.log(this.pagination)
                 })
                 .catch((err) => {
                 console.dir(err)
@@ -55,17 +52,17 @@ export default function createVueApp() {
                 if(status == 'new'){
                     // this.myModel.show();
                     this.$refs.pmodal.openmodal()
-                    this.tempproduct = {imgsUrl : []};
+                    this.tempProduct = {imgsUrl : []};
                     this.isNew = true;
                 }else if(status == 'edit'){
                     // this.myModel.show();
                     this.$refs.pmodal.openmodal()
-                    this.tempproduct = {...item}
+                    this.tempProduct = {...item}
                     this.isNew = false;
                 }else if(status == 'delete'){
                     // this.delmyModel.show();
                     this.$refs.dpmodal.openmodal()
-                    this.tempproduct = {...item}
+                    this.tempProduct = {...item}
                     this.isNew = 'delete';
                 }
             },
@@ -74,25 +71,16 @@ export default function createVueApp() {
                 let method = 'post'
                 
                 if(!this.isNew){
-                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempproduct.id}`
+                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempProduct.id}`
                     method = 'put'              
                 }else if(this.isNew == 'delete'){
-                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempproduct.id}`
+                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempProduct.id}`
                     method = 'delete'               
-                }else if(this.isNew){
-                    // console.log(this.tempproduct)
-                    apiUrl = `${this.url}api/${this.path}/admin/product`
-                    method = 'post'               
-                } 
-                // console.log(apiUrl)
-                // console.log(method)
-                axios[method](apiUrl, { data: this.tempproduct })
-                // console.log(apiUrl)
-                // console.log({ data: this.tempproduct })
+                }
+                axios[method](apiUrl, { data: this.tempProduct })
                 .then((res) =>{
                     // console.log(res)
                     if(this.isNew || !this.isNew){
-                        // this.myModel.hide()
                         this.$refs.pmodal.closemodal()
                     } 
                     if(this.isNew == 'delete'){
@@ -102,6 +90,7 @@ export default function createVueApp() {
                 })
                 .catch((err) => {
                 console.log(err)
+                alert(err.data.message)
                 })
                 },
                 
@@ -118,4 +107,4 @@ export default function createVueApp() {
             delproductmodal
         },
         
-    }).mount('#app');}
+    }).mount('#app');
