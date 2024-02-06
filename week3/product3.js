@@ -1,11 +1,10 @@
 import {createApp} from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.1/vue.esm-browser.min.js'
 
-export default function createVueApp() {
-    return createApp({
+    createApp({
         data(){
             return{                            
                 products:[],
-                tempproduct:{
+                tempProduct:{
                     imagesUrl : [],
                 },
                 sum : 0,   
@@ -21,23 +20,22 @@ export default function createVueApp() {
                 //取出token
                 const token = document.cookie.replace(/(?:(?:^|.*;\s*)practiceToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
                 axios.defaults.headers.common['Authorization'] = token;
-                // console.log('token',token)
 
                 axios.post(`${this.url}api/user/check`)
                 .then((res) =>{
                 // console.log(res)                 
-                this.getproducts()              
+                this.getProducts()              
                 })
                 .catch((err) => {
                 console.log(err)
-                alert(err.response.data.message)
+                alert(err.data.message)
                 window.location = 'signin3.html'
                 })
             },
-            getproducts(){
+            getProducts(){
                 axios.get(`${this.url}api/${this.path}/admin/products`)
                 .then((res) =>{
-                // console.log(res)
+                console.log(res)
                 this.products = res.data.products
                 
                 })
@@ -49,15 +47,15 @@ export default function createVueApp() {
                  
                 if(status == 'new'){
                     this.myModel.show();
-                    this.tempproduct = {imgsUrl : []};
+                    this.tempProduct = {imgsUrl : []};
                     this.isNew = true;
                 }else if(status == 'edit'){
                     this.myModel.show();
-                    this.tempproduct = {...item}
+                    this.tempProduct = {...item}
                     this.isNew = false;
                 }else if(status == 'delete'){
                     this.delmyModel.show();
-                    this.tempproduct = {...item}
+                    this.tempProduct = {...item}
                     this.isNew = 'delete';
                 }
             },
@@ -66,37 +64,30 @@ export default function createVueApp() {
                 let method = 'post'
                 
                 if(!this.isNew){
-                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempproduct.id}`
+                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempProduct.id}`
                     method = 'put'              
                 }else if(this.isNew == 'delete'){
-                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempproduct.id}`
+                    apiUrl = `${this.url}api/${this.path}/admin/product/${this.tempProduct.id}`
                     method = 'delete'               
-                }else if(this.isNew){
-                    // console.log(this.tempproduct)
-                    apiUrl = `${this.url}api/${this.path}/admin/product`
-                    method = 'post'               
-                } 
-                // console.log(apiUrl)
-                // console.log(method)
-                axios[method](apiUrl, { data: this.tempproduct })
-                // console.log(apiUrl)
-                // console.log({ data: this.tempproduct })
+                }
+                axios[method](apiUrl, { data: this.tempProduct })
                 .then((res) =>{
-                    console.log(res)
+                    // console.log(res)
                     if(this.myModel){
                         this.myModel.hide()
                     } 
                     if(this.delmyModel){
                         this.delmyModel.hide()
                     }
-                    this.getproducts()
+                    this.getProducts()
                 })
                 .catch((err) => {
-                console.log(err)
+                    console.log(err.data.message)
+                    alert(err.data.message)                
                 })
                 },
                 createImages(){
-                    this.tempproduct.imagesUrl =[];
+                    this.tempProduct.imagesUrl =[];
                 }
         },
                                
@@ -108,4 +99,5 @@ export default function createVueApp() {
             this.delmyModel = new bootstrap.Modal(deletemodelBtn)//實體化
         },
         
-    }).mount('#app');}
+    }).mount('#app');
+
