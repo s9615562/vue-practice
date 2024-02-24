@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app" class="container mt-3">
+      <h1>Emit，向外發送資料 {{ text }}</h1>
+      <card 
+        :text="text"
+        :outer-method="getText"></card>
+      <!-- 在 HTML 標籤、屬性上，一律都是小寫 -->
+    </div>
+
+    <script type="module">
+      const card = {
+        data() {
+          return {
+            newText: ''
+          }
+        },
+        // #1 加入觸發事件
+        // #2 傳遞資料
+        // #3 外層接收資料
+        // #4 不透過 event  傳遞事件資料
+        // #5 命名重點
+        methods: {
+          // updateData() {
+          //   this.$emit('pushText', this.newText); // 兩個參數: 自訂義名稱、額外傳遞的參數
+          // }
+        },
+        props: ['text', 'url', 'outerMethod'],
+        template: `<div class="card" style="width: 18rem;">
+          <img :src="url" class="card-img-top">
+          <div class="card-body">
+            <input type="text" v-model="newText"> 
+            <button type="button" @click="outerMethod(newText)">發送資料</button>
+          </div>
+        </div>`,
+        created() {
+          this.newText = this.text;
+          console.log(this);
+          this.outerMethod // 這個 this 指向應該為誰？
+        }
+      }
+
+      const app = Vue.createApp({
+        components: {
+          card,
+        },
+        methods: {
+          getText(text) {
+            console.log('外層方法被觸發', text);
+            this.text = text
+          }
+        },
+        data() {
+          return {
+            text: '外層文字',
+          };
+        },
+      });
+
+      app.mount('#app');
+    </script>
+  </body>
+</html>

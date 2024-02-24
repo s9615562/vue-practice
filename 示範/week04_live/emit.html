@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app" class="container mt-3">
+      <h1>問題：為何外層接收資料沒有觸發</h1>
+      <card @getData="emit-data"
+            ></card>
+    </div>
+
+    <script type="module">
+      const card = {
+        data() {
+          return {
+            newText: ''
+          }
+        },
+        methods: {
+          emitData() {
+            this.$emit('emit-data', this.newText)
+          },
+        },
+        template: `<div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <input type="text" v-model="newText">
+            <button type="button" @click="emitData">發送事件</button>
+          </div>
+        </div>`,
+      }
+
+      const app = Vue.createApp({
+        components: {
+          card,
+        },
+        methods: {
+          getEvent() {
+            console.log('Event Trigger');
+          },
+          getData() {
+            console.log(12321);
+          }
+        },
+        data() {
+          return {
+            text: '外層文字',
+          };
+        },
+      });
+
+      app.mount('#app');
+    </script>
+  </body>
+</html>

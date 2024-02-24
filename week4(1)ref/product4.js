@@ -14,7 +14,6 @@ createApp({
                 url:'https://ec-course-api.hexschool.io/v2/',
                 path : 's9615562',
                 isNew : false,
-                // myModel : null,
                 delmyModel : null
             }
         },
@@ -98,14 +97,12 @@ createApp({
                 },
                 
         },
-                               
-        mounted() {
-            this.check()    
-        },
         components:{
             pagination,
             productmodal,
             delproductmodal
         },
-        
+        mounted() {
+            this.check()    
+        },
     }).mount('#app');

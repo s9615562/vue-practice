@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veevalidation</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.12.4/vee-validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.12.4/dist/vee-validate-rules.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.12.4/dist/vee-validate-i18n.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+
+</head>
+<body>
+    <div id="app">
+    <v-form v-slot="{ errors }" @submit="onSubmit" >
+        {{errors}}
+    
+
+    <v-field
+        id="email"
+        name="email"
+        type="email"
+        class="form-control"
+        :class="{ 'is-invalid': errors['email'] }"
+        placeholder="請輸入 Email" rules="email|required"
+        v-model="user.email"
+    ></v-field>
+    <error-message name="email" class="invalid-feedback"></error-message>
+    </v-form>
+    </div>
+
+
+<script>
+
+    Object.keys(VeeValidateRules).forEach(rule => {
+    if (rule !== 'default') {
+        VeeValidate.defineRule(rule, VeeValidateRules[rule].validate);
+    }
+    });
+
+    VeeValidateI18n.loadLocaleFromURL('./zh_TW.json');
+
+    // Activate the locale
+    VeeValidate.configure({
+    generateMessage: VeeValidateI18n.localize('zh_TW'),
+    validateOnInput: true, // 調整為：輸入文字時，就立即進行驗證
+    });
+
+    const app = Vue.createApp({
+        data(){
+            return{
+                user:{
+                    email:''
+                }
+            }
+        },
+        methods:{
+            onSubmit(){
+                console.log(this)
+            }
+        }
+    });
+    app.component('VForm', VeeValidate.Form);
+    app.component('VField', VeeValidate.Field);
+    app.component('ErrorMessage', VeeValidate.ErrorMessage);
+
+    app.mount('#app');
+</script>
+</body>
+</html>
