@@ -1,5 +1,6 @@
 <template>
   <h1>This is DashBoard Product page.</h1>
+<<<<<<< HEAD
   <div class="container">
     <div class="text-end mt-4">
       <button class="btn btn-primary" v-on:click="openmodal('new')">
@@ -178,3 +179,6 @@ export default {
   },
 };
 </script>
+=======
+</template>
+>>>>>>> d79d8da07321306dc9b69eaec5980c83fc553445
